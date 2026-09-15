@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Validator CNP Romanesc - Verificare Online Gratuita</title>
+  <meta name="description" content="Valideaza gratuit si instant Codul Numeric Personal (CNP) romanesc. Extrage sexul, data nasterii si judetul. Procesare 100% locala, fara trimitere de date." />
+  <meta name="keywords" content="validator CNP, verificare CNP, cod numeric personal, validare CNP Romania, CNP online" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Validator CNP Romanesc - Verificare Online Gratuita" />
+  <meta property="og:description" content="Valideaza instant CNP-ul romanesc direct in browser. Zero date trimise catre server." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue-50:#eff6ff;--blue-100:#dbeafe;--blue-200:#bfdbfe;--blue-500:#3b82f6;
+      --blue-600:#2563eb;--blue-700:#1d4ed8;--blue-900:#1e3a8a;
+      --slate-50:#f8fafc;--slate-100:#f1f5f9;--slate-200:#e2e8f0;--slate-300:#cbd5e1;
+      --slate-400:#94a3b8;--slate-500:#64748b;--slate-600:#475569;--slate-700:#334155;
+      --slate-800:#1e293b;--green-50:#f0fdf4;--green-100:#dcfce7;
+      --green-500:#22c55e;--green-600:#16a34a;--green-700:#15803d;
+      --red-50:#fff1f2;--red-100:#ffe4e6;--red-500:#ef4444;--red-700:#b91c1c;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',system-ui,sans-serif;background:linear-gradient(135deg,#f0f4ff 0%,#e8f0fe 40%,#f0f9ff 100%);min-height:100vh;color:var(--slate-800);line-height:1.6}
+    header{background:linear-gradient(135deg,var(--blue-700) 0%,var(--blue-900) 100%);padding:1.5rem 1rem;text-align:center;position:relative;overflow:hidden}
+    header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,255,255,.07) 0%,transparent 60%)}
+    header .inner{position:relative;z-index:1;max-width:760px;margin:0 auto}
+    header h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-.5px}
+    header p.tagline{color:var(--blue-200);margin-top:.4rem;font-size:clamp(.85rem,2vw,1rem)}
+    .badge{display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);padding:.25rem .75rem;border-radius:999px;font-size:.75rem;font-weight:600;letter-spacing:.5px;margin-top:.75rem;backdrop-filter:blur(4px)}
+    .badge svg{width:14px;height:14px;flex-shrink:0}
+    main{max-width:820px;margin:0 auto;padding:2rem 1rem 3rem}
+    .card{background:#fff;border-radius:20px;box-shadow:0 4px 6px -1px rgba(0,0,0,.05),0 20px 60px -10px rgba(37,99,235,.12),0 0 0 1px rgba(37,99,235,.06);padding:clamp(1.5rem,5vw,2.5rem);position:relative;overflow:hidden}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue-500),var(--blue-700))}
+    .input-group{margin-bottom:1.25rem}
+    .input-group label{display:block;font-size:.8rem;font-weight:600;color:var(--slate-600);letter-spacing:.5px;text-transform:uppercase;margin-bottom:.5rem}
+    .input-wrap{position:relative}
+    #cnp-input{width:100%;padding:.9rem 3rem .9rem 1.1rem;font-size:1.45rem;font-weight:600;letter-spacing:.18em;border:2px solid var(--slate-200);border-radius:12px;background:var(--slate-50);color:var(--slate-800);transition:border-color .2s,box-shadow .2s,background .2s;outline:none;font-family:'Inter',monospace}
+    #cnp-input:focus{border-color:var(--blue-500);background:#fff;box-shadow:0 0 0 4px rgba(59,130,246,.12)}
+    #cnp-input.invalid{border-color:var(--red-500);background:var(--red-50);box-shadow:0 0 0 4px rgba(239,68,68,.1)}
+    #cnp-input.valid{border-color:var(--green-500);background:var(--green-50);box-shadow:0 0 0 4px rgba(34,197,94,.1)}
+    .clear-btn{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--slate-400);display:none;align-items:center;justify-content:center;padding:.25rem;border-radius:6px;transition:color .2s,background .2s}
+    .clear-btn:hover{color:var(--slate-700);background:var(--slate-100)}
+    .clear-btn.visible{display:flex}
+    .char-counter{text-align:right;font-size:.75rem;color:var(--slate-400);margin-top:.35rem;font-weight:500}
+    .char-counter span{color:var(--blue-600);font-weight:700}
+    #validate-btn{width:100%;padding:.95rem 1.5rem;font-size:1rem;font-weight:700;letter-spacing:.5px;background:linear-gradient(135deg,var(--blue-600) 0%,var(--blue-700) 100%);color:#fff;border:none;border-radius:12px;cursor:pointer;transition:transform .15s,box-shadow .15s,filter .15s;box-shadow:0 4px 15px rgba(37,99,235,.35);position:relative;overflow:hidden}
+    #validate-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
+    #validate-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,.45);filter:brightness(1.05)}
+    #validate-btn:active{transform:translateY(0);box-shadow:0 2px 8px rgba(37,99,235,.35);filter:brightness(.97)}
+    #validate-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    #result-area{margin-top:1.5rem;opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+    #result-area.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+    .msg-error{display:flex;align-items:flex-start;gap:.75rem;background:var(--red-50);border:1px solid var(--red-100);border-left:4px solid var(--red-500);border-radius:10px;padding:1rem 1.2rem;color:var(--red-700);font-size:.9rem;font-weight:500}
+    .msg-error svg{flex-shrink:0;width:20px;height:20px;color:var(--red-500);margin-top:.05rem}
+    .msg-success-header{display:flex;align-items:center;gap:.75rem;background:var(--green-50);border:1px solid var(--green-100);border-left:4px solid var(--green-500);border-radius:10px 10px 0 0;padding:.85rem 1.2rem;color:var(--green-700);font-weight:700;font-size:.95rem}
+    .msg-success-header svg{width:20px;height:20px;color:var(--green-500)}
+    .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--slate-200);border:1px solid var(--slate-200);border-top:none;border-radius:0 0 10px 10px;overflow:hidden}
+    .result-item{background:#fff;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.2rem}
+    .result-item .ri-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--slate-500)}
+    .result-item .ri-value{font-size:1.05rem;font-weight:700;color:var(--slate-800)}
+    .result-item .ri-icon{font-size:1.1rem;margin-bottom:.15rem}
+    .divider{display:flex;align-items:center;gap:1rem;margin:2.5rem 0 2rem;color:var(--slate-400);font-size:.8rem;font-weight:500;text-transform:uppercase;letter-spacing:1px}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--slate-200)}
+    .info-section{margin-bottom:2rem}
+    .info-section h2{font-size:1.2rem;font-weight:700;color:var(--slate-800);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+    .info-section h2 .h2-icon{width:28px;height:28px;border-radius:8px;background:var(--blue-100);color:var(--blue-700);display:inline-flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+    .info-section h3{font-size:.95rem;font-weight:600;color:var(--slate-700);margin:1rem 0 .4rem}
+    .info-section p{font-size:.9rem;color:var(--slate-600);margin-bottom:.6rem}
+    .cnp-table{width:100%;border-collapse:collapse;font-size:.85rem;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);margin:1rem 0}
+    .cnp-table thead tr{background:var(--blue-700);color:#fff}
+    .cnp-table thead th{padding:.6rem .8rem;text-align:left;font-weight:600;font-size:.8rem;letter-spacing:.3px}
+    .cnp-table tbody tr:nth-child(even){background:var(--blue-50)}
+    .cnp-table tbody tr:nth-child(odd){background:#fff}
+    .cnp-table tbody td{padding:.55rem .8rem;color:var(--slate-700);vertical-align:top;border-bottom:1px solid var(--slate-100)}
+    .cnp-table tbody td:first-child{font-weight:700;color:var(--blue-700);font-family:monospace;font-size:.9rem}
+    .cnp-table tbody tr:last-child td{border-bottom:none}
+    .privacy-box{background:linear-gradient(135deg,var(--blue-50) 0%,#f0f9ff 100%);border:1px solid var(--blue-200);border-radius:14px;padding:1.4rem 1.6rem;position:relative;overflow:hidden}
+    .privacy-box::before{content:'';position:absolute;right:1.5rem;top:1.2rem;font-size:2.5rem;opacity:.08}
+    .privacy-box h2{color:#1e3a8a}
+    .privacy-box .h2-icon{background:var(--blue-200)}
+    .privacy-box p{color:#1e3a8a}
+    .privacy-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.6rem;margin-top:.8rem}
+    .pf-item{display:flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:600;color:#1e3a8a}
+    .pf-check{width:18px;height:18px;border-radius:50%;background:var(--blue-600);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.65rem}
+    footer{text-align:center;padding:1.5rem 1rem;font-size:.78rem;color:var(--slate-400);border-top:1px solid var(--slate-200)}
+    @media(max-width:480px){#cnp-input{font-size:1.15rem;letter-spacing:.1em}.result-grid{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>Validator CNP Romanesc</h1>
+    <p class="tagline">Verificare instant a Codului Numeric Personal &middot; 100% in browser</p>
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Date procesate exclusiv local &middot; Niciun server implicat
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card" aria-label="Calculator validare CNP">
+    <div class="input-group">
+      <label for="cnp-input">Introdu CNP-ul (13 cifre)</label>
+      <div class="input-wrap">
+        <input type="text" id="cnp-input" name="cnp" maxlength="13" inputmode="numeric"
+          autocomplete="off" spellcheck="false" placeholder="0000000000000"
+          aria-label="Cod Numeric Personal" aria-describedby="cnp-hint" />
+        <button class="clear-btn" id="clear-btn" aria-label="Sterge CNP" title="Sterge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="char-counter" id="cnp-hint" aria-live="polite"><span id="char-count">0</span> / 13 caractere</div>
+    </div>
+    <button id="validate-btn" type="button">Valideaza CNP</button>
+    <div id="result-area" role="region" aria-label="Rezultat validare" aria-live="assertive"></div>
+  </section>
+
+  <div class="divider">Informatii utile</div>
+
+  <article class="info-section" aria-label="Cum functioneaza CNP-ul">
+    <h2><span class="h2-icon" aria-hidden="true">&#128218;</span> Cum functioneaza validarea CNP?</h2>
+    <p>Codul Numeric Personal (CNP) romanesc are <strong>13 cifre</strong>, fiecare cu o semnificatie precisa, stabilita prin legislatia in vigoare. Structura sa permite extragerea automatica a informatiilor demografice de baza.</p>
+    <h3>Structura completa: S AA LL ZZ JJ NNN C</h3>
+    <table class="cnp-table" aria-label="Structura CNP">
+      <thead><tr><th>Pozitie</th><th>Camp</th><th>Semnificatie</th></tr></thead>
+      <tbody>
+        <tr><td>S (1 cifra)</td><td>Sex &amp; secol</td><td>1/2 = M/F nascuti 1900-1999 &middot; 3/4 = M/F 1800-1899 &middot; 5/6 = M/F 2000-2099 &middot; 7/8 = M/F rezidenti straini &middot; 9 = persoane fara cetatenie</td></tr>
+        <tr><td>AA (2 cifre)</td><td>An nastere</td><td>Ultimele doua cifre ale anului de nastere (ex. 85 = 1985)</td></tr>
+        <tr><td>LL (2 cifre)</td><td>Luna nastere</td><td>Luna nasterii (01-12)</td></tr>
+        <tr><td>ZZ (2 cifre)</td><td>Zi nastere</td><td>Ziua nasterii (01-31)</td></tr>
+        <tr><td>JJ (2 cifre)</td><td>Judet</td><td>Codul judetului/sectorului in care s-a inregistrat nasterea (01-46, 51-52)</td></tr>
+        <tr><td>NNN (3 cifre)</td><td>Nr. ordine</td><td>Numarul de ordine in ziua si judetul respectiv (001-999)</td></tr>
+        <tr><td>C (1 cifra)</td><td>Cifra de control</td><td>Calculata prin algoritmul de ponderare cu cheia 279146358279</td></tr>
+      </tbody>
+    </table>
+    <h3>Algoritmul cifrei de control</h3>
+    <p>Fiecare din primele 12 cifre ale CNP-ului se inmulteste cu cifra corespunzatoare din cheia <strong>279146358279</strong>. Rezultatele se sumeaza, iar suma se imparte la <strong>11</strong>. Daca restul este <strong>10</strong>, cifra de control devine <strong>1</strong>; altfel, cifra de control este chiar restul impartirii.</p>
+  </article>
+
+  <article class="info-section privacy-box" aria-label="Confidentialitate">
+    <h2><span class="h2-icon" aria-hidden="true">&#128272;</span> Confidentialitate Absoluta</h2>
+    <p>Aceasta aplicatie a fost proiectata de la zero cu <strong>privacy-by-design</strong>. Tot codul de validare ruleaza <strong>exclusiv in browserul tau</strong>, fara niciun apel de retea, fara cookie-uri de tracking si fara colectare de date.</p>
+    <p>CNP-ul introdus de tine <strong>nu este trimis niciodata</strong> catre un server, nu este stocat in nicio baza de date si nu este transmis unor terti. Poti verifica deschizand DevTools - Network: vei constata ca nicio cerere HTTP nu este efectuata in momentul validarii.</p>
+    <div class="privacy-features">
+      <div class="pf-item"><div class="pf-check">&#10003;</div> Fara server-side processing</div>
+      <div class="pf-item"><div class="pf-check">&#10003;</div> Fara baze de date</div>
+      <div class="pf-item"><div class="pf-check">&#10003;</div> Fara cookies de tracking</div>
+      <div class="pf-item"><div class="pf-check">&#10003;</div> Functioneaza offline</div>
+      <div class="pf-item"><div class="pf-check">&#10003;</div> Open-source logic</div>
+      <div class="pf-item"><div class="pf-check">&#10003;</div> GDPR compliant</div>
+    </div>
+  </article>
+
+  <article class="info-section" aria-label="Intrebari frecvente">
+    <h2><span class="h2-icon" aria-hidden="true">&#10067;</span> Intrebari frecvente</h2>
+    <h3>De ce CNP-ul meu poate fi valid dar totusi incorect?</h3>
+    <p>Validatorul verifica daca CNP-ul respecta <strong>structura matematica</strong> si algoritmul de control. Nu poate confirma ca datele corespund unei persoane reale inregistrate in evidenta populatiei - asta necesita acces la baze de date oficiale (DEPABD).</p>
+    <h3>Ce inseamna cifra 1, 2, 5, 6 la prima pozitie?</h3>
+    <p>Prima cifra (S) identifica simultan <strong>sexul</strong> si <strong>secolul nasterii</strong>: 1 = Masculin, sec. XX &middot; 2 = Feminin, sec. XX &middot; 5 = Masculin, sec. XXI &middot; 6 = Feminin, sec. XXI. Valorile 3, 4 se refera la sec. XIX, iar 7, 8, 9 la categorii speciale de rezidenti.</p>
+    <h3>Pot valida CNP-uri de cetateni straini?</h3>
+    <p>Da. CNP-urile cu prima cifra 7 sau 8 apartin cetatenilor straini cu resedinta in Romania si sunt validate cu aceleasi reguli matematice.</p>
+  </article>
+</main>
+
+<footer>
+  <p>&copy; <span id="yr"></span> ValidatorCNP &middot; Nicio data nu este transmisa pe internet</p>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var KEY=[2,7,9,1,4,6,3,5,8,2,7,9];
+var JUDETE={'01':'Alba','02':'Arad','03':'Arges','04':'Bacau','05':'Bihor','06':'Bistrita-Nasaud','07':'Botosani','08':'Brasov','09':'Braila','10':'Buzau','11':'Caras-Severin','12':'Cluj','13':'Constanta','14':'Covasna','15':'Dambovita','16':'Dolj','17':'Galati','18':'Gorj','19':'Harghita','20':'Hunedoara','21':'Ialomita','22':'Iasi','23':'Ilfov','24':'Maramures','25':'Mehedinti','26':'Mures','27':'Neamt','28':'Olt','29':'Prahova','30':'Satu Mare','31':'Salaj','32':'Sibiu','33':'Suceava','34':'Teleorman','35':'Timis','36':'Tulcea','37':'Vaslui','38':'Valcea','39':'Vrancea','40':'Bucuresti','41':'Bucuresti S1','42':'Bucuresti S2','43':'Bucuresti S3','44':'Bucuresti S4','45':'Bucuresti S5','46':'Bucuresti S6','51':'Calarasi','52':'Giurgiu'};
+var SEX={'1':{sex:'Masculin',icon:'M',century:1900},'2':{sex:'Feminin',icon:'F',century:1900},'3':{sex:'Masculin',icon:'M',century:1800},'4':{sex:'Feminin',icon:'F',century:1800},'5':{sex:'Masculin',icon:'M',century:2000},'6':{sex:'Feminin',icon:'F',century:2000},'7':{sex:'Masculin',icon:'M',century:1900},'8':{sex:'Feminin',icon:'F',century:1900},'9':{sex:'N/A',icon:'?',century:2000}};
+var LUNI=['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+var inp=document.getElementById('cnp-input');
+var btn=document.getElementById('validate-btn');
+var res=document.getElementById('result-area');
+var clrBtn=document.getElementById('clear-btn');
+var charCnt=document.getElementById('char-count');
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+function showResult(html){res.innerHTML=html;res.classList.add('visible')}
+function hideResult(){res.classList.remove('visible');setTimeout(function(){res.innerHTML=''},310)}
+function setInputState(s){inp.classList.remove('valid','invalid');if(s)inp.classList.add(s)}
+function errIcon(){return'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'}
+function okIcon(){return'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'}
+
+function validateCNP(cnp){
+  if(!cnp.length)return{ok:false,msg:'Introduceti un CNP pentru a-l valida.'};
+  if(cnp.length<13)return{ok:false,msg:'CNP-ul are doar <strong>'+cnp.length+'</strong> cifre. Sunt necesare exact <strong>13</strong>.'};
+  if(!/^\d{13}$/.test(cnp))return{ok:false,msg:'CNP-ul poate contine <strong>doar cifre</strong> (0-9), fara spatii sau litere.'};
+  var s=cnp[0];
+  if(!SEX[s])return{ok:false,msg:'Prima cifra (<strong>'+s+'</strong>) nu este valida. Valorile permise sunt 1-9.'};
+  var luna=parseInt(cnp.substring(3,5),10);
+  if(luna<1||luna>12)return{ok:false,msg:'Luna nasterii (<strong>'+cnp.substring(3,5)+'</strong>) nu este valida (01-12).'};
+  var zi=parseInt(cnp.substring(5,7),10);
+  if(zi<1||zi>31)return{ok:false,msg:'Ziua nasterii (<strong>'+cnp.substring(5,7)+'</strong>) nu este valida (01-31).'};
+  var jj=cnp.substring(7,9);
+  if(!JUDETE[jj])return{ok:false,msg:'Codul de judet (<strong>'+jj+'</strong>) nu corespunde niciunui judet valid.'};
+  var sum=0;for(var i=0;i<12;i++)sum+=KEY[i]*parseInt(cnp[i],10);
+  var rest=sum%11;var control=rest===10?1:rest;
+  if(control!==parseInt(cnp[12],10))return{ok:false,msg:'Cifra de control calculata este <strong>'+control+'</strong>, dar CNP-ul contine <strong>'+cnp[12]+'</strong>. CNP-ul este <strong>invalid</strong>.'};
+  var ss=SEX[s];
+  var an=ss.century+parseInt(cnp.substring(1,3),10);
+  return{ok:true,sex:ss.sex+' ('+ss.icon+')',data:cnp.substring(5,7)+'/'+cnp.substring(3,5)+'/'+an,luna:LUNI[luna-1],an:an,judet:JUDETE[jj]};
+}
+
+function doValidate(){
+  var cnp=inp.value.trim();
+  btn.textContent='Se valideaza...';btn.disabled=true;
+  setTimeout(function(){
+    btn.textContent='Valideaza CNP';btn.disabled=false;
+    var r=validateCNP(cnp);
+    if(!r.ok){
+      setInputState('invalid');
+      showResult('<div class="msg-error" role="alert">'+errIcon()+'<span>'+r.msg+'</span></div>');
+    } else {
+      setInputState('valid');
+      showResult('<div class="msg-success-header" role="status">'+okIcon()+' CNP valid &#10003; - toate verificarile au trecut cu succes</div><div class="result-grid"><div class="result-item"><div class="ri-icon">&#128100;</div><div class="ri-label">Sex</div><div class="ri-value">'+r.sex+'</div></div><div class="result-item"><div class="ri-icon">&#127874;</div><div class="ri-label">Data nasterii</div><div class="ri-value">'+r.data+'</div></div><div class="result-item"><div class="ri-icon">&#128197;</div><div class="ri-label">Luna</div><div class="ri-value">'+r.luna+' '+r.an+'</div></div><div class="result-item"><div class="ri-icon">&#128205;</div><div class="ri-label">Judet nastere</div><div class="ri-value">'+r.judet+'</div></div></div>');
+    }
+  },280);
+}
+
+btn.addEventListener('click',doValidate);
+inp.addEventListener('keydown',function(e){if(e.key==='Enter')doValidate()});
+inp.addEventListener('input',function(){
+  inp.value=inp.value.replace(/\D/g,'');
+  var len=inp.value.length;
+  charCnt.textContent=len;
+  clrBtn.classList.toggle('visible',len>0);
+  setInputState(null);
+  if(!len)hideResult();
+  if(len===13)setTimeout(doValidate,120);
+});
+clrBtn.addEventListener('click',function(){
+  inp.value='';charCnt.textContent='0';clrBtn.classList.remove('visible');
+  setInputState(null);hideResult();inp.focus();
+});
+})();
+</script>
+</body>
+</html>
